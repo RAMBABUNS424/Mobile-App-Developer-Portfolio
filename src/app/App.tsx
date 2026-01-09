@@ -38,13 +38,13 @@ const projects = [
   {
     title: "React.js Web Applications",
     description: "Developed multiple web applications using React.js with Redux state management, focusing on performance optimization and responsive design principles.",
-    image: "https://images.unsplash.com/photo-1646737554389-49329965ef01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbWFydHBob25lJTIwYXBwJTIwZGV2ZWxvcG1lbnR8ZW58MXx8fHwxNzY3Nzg5MTkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    image: "https://img.freepik.com/free-vector/app-development-banner_33099-1720.jpg?semt=ais_hybrid&w=740&q=80",
     tags: ["React.js", "Redux", "JavaScript", "CSS", "HTML"]
   },
   {
     title: "Cross-Platform Solutions",
     description: "Implemented seamless cross-platform mobile applications with analytics integration, code reviews, and performance optimizations for enhanced user experience.",
-    image: "https://images.unsplash.com/photo-1707528041466-83a325f01a3c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZXZlbG9wZXIlMjB3b3Jrc3BhY2V8ZW58MXx8fHwxNzY3NzQ3MTA1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    image: "https://media.istockphoto.com/id/1189378904/vector/mobile-apps-creation-of-a-mobile-application-web-page-created-from-separate-blocks-user.jpg?s=612x612&w=0&k=20&c=HIiI8lu3-_-IhUS-Jj20zw0AS-w1FIKXGn_l4qdHAzQ=",
     tags: ["React Native", "API Testing", "Azure", "Github"]
   }
 ];
