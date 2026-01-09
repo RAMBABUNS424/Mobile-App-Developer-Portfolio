@@ -234,7 +234,7 @@ export default function App() {
 
 
               <motion.a
-                href="/Document/RAMBABU_N.pdf"
+                href="../assets/Rambabu_N_Resume.pdf"
                 download="Rambabu_N_Resume.pdf"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

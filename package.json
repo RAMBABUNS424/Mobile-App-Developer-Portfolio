@@ -2,7 +2,7 @@
   "name": "@my-porfolio-ram",
   "private": true,
   "version": "0.0.1",
-  "homepage": "http://localhost:5173/Mobile-App-Developer-Portfolio/",
+  "homepage": "https://rambabuns424.github.io/Mobile-App-Developer-Portfolio/",
   "type": "module",
   "scripts": {
     "dev": "vite",
