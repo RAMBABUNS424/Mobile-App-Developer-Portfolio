@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: '/Mobile-App-Developer-Portfolio/', // 👈 REQUIRED for GitHub Pages
+  base: './Mobile-App-Developer-Portfolio/', // 👈 REQUIRED for GitHub Pages
 
   plugins: [
     react(),
