@@ -1,7 +1,7 @@
 
   # Mobile App Developer Portfolio
 
-  This is a code bundle for Mobile App Developer Portfolio. The original project is available at https://www.figma.com/design/llBgBFQtqPtBrmwM5ZjXYC/Mobile-App-Developer-Portfolio.
+  This is a code bundle for Mobile App Developer Portfolio. The original project is available at  "".
 
   ## Running the code
 
