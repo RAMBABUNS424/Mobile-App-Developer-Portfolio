@@ -1,13 +1,14 @@
-
 import * as THREE from 'three';
 import { useEffect, useRef } from 'react';
-
 
 export function ThreeBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
+
+    // Detect mobile
+    const isMobile = window.innerWidth < 768;
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -19,39 +20,63 @@ export function ThreeBackground() {
     );
     camera.position.z = 5;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isMobile });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
 
     // Create floating geometric shapes
     const geometries = [
-      new THREE.BoxGeometry(0.5, 0.5, 0.5),
-      new THREE.SphereGeometry(0.3, 32, 32),
-      new THREE.TorusGeometry(0.3, 0.1, 16, 100),
-      new THREE.OctahedronGeometry(0.3),
-      new THREE.TetrahedronGeometry(0.4),
+      new THREE.BoxGeometry(0.4, 0.4, 0.4),
+      new THREE.SphereGeometry(0.25, 16, 16),
+      new THREE.TorusGeometry(0.25, 0.08, 12, 48),
+      new THREE.OctahedronGeometry(0.25),
+      new THREE.TetrahedronGeometry(0.3),
     ];
 
-    const material = new THREE.MeshPhongMaterial({
-      color: 0x3b82f6, // Blue
-      shininess: 100,
-      specular: 0x00ffff,
-      emissive: 0x1e40af,
-      emissiveIntensity: 0.2,
-    });
+    // Neon materials
+    const materials = [
+      new THREE.MeshPhongMaterial({
+        color: 0x3b82f6, // Electric Blue
+        shininess: 80,
+        specular: 0x00ffff,
+        emissive: 0x1e40af,
+        emissiveIntensity: 0.3,
+        transparent: true,
+        opacity: 0.85,
+      }),
+      new THREE.MeshPhongMaterial({
+        color: 0x8b5cf6, // Neon Purple
+        shininess: 80,
+        specular: 0xff00ff,
+        emissive: 0x5b21b6,
+        emissiveIntensity: 0.3,
+        transparent: true,
+        opacity: 0.85,
+      }),
+      new THREE.MeshPhongMaterial({
+        color: 0x06b6d4, // Neon Cyan
+        shininess: 80,
+        specular: 0xffffff,
+        emissive: 0x0e7490,
+        emissiveIntensity: 0.3,
+        transparent: true,
+        opacity: 0.85,
+      })
+    ];
 
     const meshes: THREE.Mesh[] = [];
-    const numShapes = 15;
+    const numShapes = isMobile ? 8 : 16;
 
     for (let i = 0; i < numShapes; i++) {
       const geometry = geometries[Math.floor(Math.random() * geometries.length)];
+      const material = materials[i % materials.length];
       const mesh = new THREE.Mesh(geometry, material);
 
       // Random position
-      mesh.position.x = (Math.random() - 0.5) * 10;
-      mesh.position.y = (Math.random() - 0.5) * 10;
-      mesh.position.z = (Math.random() - 0.5) * 5;
+      mesh.position.x = (Math.random() - 0.5) * 8;
+      mesh.position.y = (Math.random() - 0.5) * 8;
+      mesh.position.z = (Math.random() - 0.5) * 4;
 
       // Random rotation
       mesh.rotation.x = Math.random() * Math.PI;
@@ -59,9 +84,9 @@ export function ThreeBackground() {
 
       // Store random velocity
       (mesh as any).velocity = {
-        x: (Math.random() - 0.5) * 0.01,
-        y: (Math.random() - 0.5) * 0.01,
-        rotation: (Math.random() - 0.5) * 0.02,
+        x: (Math.random() - 0.5) * 0.006,
+        y: (Math.random() - 0.5) * 0.006,
+        rotation: (Math.random() - 0.5) * 0.015,
       };
 
       scene.add(mesh);
@@ -69,38 +94,56 @@ export function ThreeBackground() {
     }
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0x404040, 1);
+    const ambientLight = new THREE.AmbientLight(0x1a1a2e, 1.5);
     scene.add(ambientLight);
 
-    const directionalLight1 = new THREE.DirectionalLight(0x3b82f6, 1);
+    const directionalLight1 = new THREE.DirectionalLight(0x3b82f6, 1.5);
     directionalLight1.position.set(5, 5, 5);
     scene.add(directionalLight1);
 
-    const directionalLight2 = new THREE.DirectionalLight(0x06b6d4, 0.5);
+    const directionalLight2 = new THREE.DirectionalLight(0x8b5cf6, 1);
     directionalLight2.position.set(-5, -5, -5);
     scene.add(directionalLight2);
 
-    // Particles
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 1000;
-    const posArray = new Float32Array(particlesCount * 3);
+    // Particle field 1 (Cyan)
+    const pGeometry1 = new THREE.BufferGeometry();
+    const pCount1 = isMobile ? 200 : 600;
+    const posArray1 = new Float32Array(pCount1 * 3);
 
-    for (let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 20;
+    for (let i = 0; i < pCount1 * 3; i++) {
+      posArray1[i] = (Math.random() - 0.5) * 15;
     }
+    pGeometry1.setAttribute('position', new THREE.BufferAttribute(posArray1, 3));
 
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.02,
-      color: 0x3b82f6,
+    const pMaterial1 = new THREE.PointsMaterial({
+      size: 0.025,
+      color: 0x06b6d4,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.5,
       blending: THREE.AdditiveBlending,
     });
+    const particles1 = new THREE.Points(pGeometry1, pMaterial1);
+    scene.add(particles1);
 
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
+    // Particle field 2 (Purple)
+    const pGeometry2 = new THREE.BufferGeometry();
+    const pCount2 = isMobile ? 150 : 400;
+    const posArray2 = new Float32Array(pCount2 * 3);
+
+    for (let i = 0; i < pCount2 * 3; i++) {
+      posArray2[i] = (Math.random() - 0.5) * 15;
+    }
+    pGeometry2.setAttribute('position', new THREE.BufferAttribute(posArray2, 3));
+
+    const pMaterial2 = new THREE.PointsMaterial({
+      size: 0.025,
+      color: 0x8b5cf6,
+      transparent: true,
+      opacity: 0.4,
+      blending: THREE.AdditiveBlending,
+    });
+    const particles2 = new THREE.Points(pGeometry2, pMaterial2);
+    scene.add(particles2);
 
     // Mouse interaction
     let mouseX = 0;
@@ -111,36 +154,42 @@ export function ThreeBackground() {
       mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    if (!isMobile) {
+      window.addEventListener('mousemove', handleMouseMove);
+    }
 
     // Animation loop
+    let animationFrameId: number;
+
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
 
       // Animate meshes
       meshes.forEach((mesh) => {
         const velocity = (mesh as any).velocity;
-
-        // Update position
         mesh.position.x += velocity.x;
         mesh.position.y += velocity.y;
 
-        // Bounce off edges
-        if (Math.abs(mesh.position.x) > 5) velocity.x *= -1;
-        if (Math.abs(mesh.position.y) > 5) velocity.y *= -1;
+        // Bounce off bounds
+        if (Math.abs(mesh.position.x) > 4) velocity.x *= -1;
+        if (Math.abs(mesh.position.y) > 4) velocity.y *= -1;
 
-        // Rotate
         mesh.rotation.x += velocity.rotation;
         mesh.rotation.y += velocity.rotation * 0.7;
       });
 
       // Animate particles
-      particlesMesh.rotation.y += 0.0005;
-      particlesMesh.rotation.x += 0.0002;
+      particles1.rotation.y += 0.0003;
+      particles1.rotation.x += 0.0001;
 
-      // Camera follows mouse
-      camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
-      camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
+      particles2.rotation.y -= 0.0002;
+      particles2.rotation.z += 0.0001;
+
+      // Smooth camera follow mouse
+      if (!isMobile) {
+        camera.position.x += (mouseX * 1.5 - camera.position.x) * 0.05;
+        camera.position.y += (mouseY * 1.5 - camera.position.y) * 0.05;
+      }
       camera.lookAt(scene.position);
 
       renderer.render(scene, camera);
@@ -159,15 +208,22 @@ export function ThreeBackground() {
 
     // Cleanup
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      if (!isMobile) {
+        window.removeEventListener('mousemove', handleMouseMove);
+      }
       window.removeEventListener('resize', handleResize);
-      if (containerRef.current) {
+      cancelAnimationFrame(animationFrameId);
+
+      if (containerRef.current && renderer.domElement.parentNode === containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);
       }
+
       geometries.forEach((geo) => geo.dispose());
-      material.dispose();
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
+      materials.forEach((mat) => mat.dispose());
+      pGeometry1.dispose();
+      pMaterial1.dispose();
+      pGeometry2.dispose();
+      pMaterial2.dispose();
       renderer.dispose();
     };
   }, []);
@@ -175,8 +231,8 @@ export function ThreeBackground() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 -z-10"
-      style={{ pointerEvents: 'auto' }}
+      className="fixed inset-0 -z-10 bg-[#030014]"
+      style={{ pointerEvents: 'none' }}
     />
   );
 }
