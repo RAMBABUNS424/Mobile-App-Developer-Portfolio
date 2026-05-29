@@ -745,6 +745,8 @@ export default function App() {
                     <p className="text-[11px] text-zinc-400 font-semibold uppercase tracking-wider">Apps Published</p>
                   </div>
 
+
+
                   <div className="glass-card p-6 rounded-2xl border border-white/5 flex flex-col justify-center items-center text-center shadow-lg relative group">
                     <div className="absolute top-3 right-3 bg-neon-purple/10 p-1.5 rounded-lg border border-neon-purple/20">
                       <GitBranch className="w-4 h-4 text-neon-purple" />
